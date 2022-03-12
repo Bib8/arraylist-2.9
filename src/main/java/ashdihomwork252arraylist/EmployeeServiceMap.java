@@ -12,14 +12,19 @@ public class EmployeeServiceMap implements EmployeeMapInterface{
 
     @Override
     public Employee addToRepositoryEmployee(String firstname, String lastname) throws NotFoundAnyMatchException, InvalidNameException {
+
         validatorEmployee(firstname, lastname);
-        Employee addEmpoyee = new Employee(StringUtils.capitalize(firstname), StringUtils.capitalize(lastname));
-        String key = firstname + lastname;
+        Employee addEmpoyee = new Employee(refactoringString(firstname), refactoringString(lastname));
+        String key = refactoringString(firstname) + refactoringString(lastname);
         if (!employeesMap.containsKey(firstname + lastname)) {
             throw new NotFoundAnyMatchException("Error - not found");
         }
         employeesMap.put(key, addEmpoyee);
         return  addEmpoyee;
+    }
+
+    private String refactoringString(String anyString) {
+        return StringUtils.capitalize(anyString.toLowerCase());
     }
 
     private void validatorEmployee(String... names) throws InvalidNameException {
@@ -31,18 +36,19 @@ public class EmployeeServiceMap implements EmployeeMapInterface{
     }
 
     @Override
-    public Employee removeFromRepositoryEmployee(String firstname, String lastname) throws NotFoundAnyMatchException {
-        String key = firstname + lastname;
-        if (!employeesMap.containsKey(firstname + lastname)) {
+    public Employee removeFromRepositoryEmployee(String firstname, String lastname) throws NotFoundAnyMatchException, InvalidNameException {
+        validatorEmployee(firstname, lastname);
+        String key = refactoringString(firstname) + refactoringString(lastname);
+        if (!employeesMap.containsKey(key)) {
             throw new NotFoundAnyMatchException("Error - not found");
         }
         return employeesMap.remove(key);
     }
 
     @Override
-    public Employee findEmployeeInRepository(String firstname, String lastname) throws NotFoundAnyMatchException {
-
-            String key = firstname + lastname;
+    public Employee findEmployeeInRepository(String firstname, String lastname) throws NotFoundAnyMatchException, InvalidNameException {
+        validatorEmployee(firstname, lastname);
+        String key = refactoringString(firstname) + refactoringString(lastname);
             if (!employeesMap.containsKey(key)) {
                 throw new NotFoundAnyMatchException("Error - not found");
             }
