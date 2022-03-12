@@ -1,6 +1,7 @@
 package ashdihomwork252arraylist;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.stereotype.Service;
 import javax.naming.InvalidNameException;
 import java.util.*;
@@ -11,16 +12,16 @@ public class EmployeeServiceMap implements EmployeeMapInterface{
     private final Map<String, Employee> employeesMap = new HashMap<>();
 
     @Override
-    public Employee addToRepositoryEmployee(String firstname, String lastname) throws NotFoundAnyMatchException, InvalidNameException {
+    public Employee addToRepositoryEmployee(String firstname, String lastname) throws InvalidNameException, NotFoundAnyMatchException {
 
         validatorEmployee(firstname, lastname);
-        Employee addEmpoyee = new Employee(refactoringString(firstname), refactoringString(lastname));
+        Employee addEmployee = new Employee(refactoringString(firstname), refactoringString(lastname));
         String key = refactoringString(firstname) + refactoringString(lastname);
-        if (!employeesMap.containsKey(firstname + lastname)) {
-            throw new NotFoundAnyMatchException("Error - not found");
+        if (employeesMap.containsKey(firstname + lastname)) {
+            throw new NotFoundAnyMatchException("Error - already exist");
         }
-        employeesMap.put(key, addEmpoyee);
-        return  addEmpoyee;
+        employeesMap.put(key, addEmployee);
+        return addEmployee;
     }
 
     private String refactoringString(String anyString) {
@@ -59,6 +60,7 @@ public class EmployeeServiceMap implements EmployeeMapInterface{
     public Collection<Employee> getAllEmployees() {
         return Collections.unmodifiableCollection(employeesMap.values());
     }
+
 
 
 }
