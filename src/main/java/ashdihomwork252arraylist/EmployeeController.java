@@ -1,38 +1,35 @@
 package ashdihomwork252arraylist;
 
-import org.springframework.http.MediaType;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.naming.InvalidNameException;
 
 @RestController
 public class EmployeeController {
-    private final EmployeeService employeeService;
+    private final EmployeeServiceMap employeeService;
 
 
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeServiceMap employeeService) {
         this.employeeService = employeeService;
     }
 
 @GetMapping(path="/post/add")
-    public String addEmployee(@RequestParam("firstName") String firstname, @RequestParam("lastName") String lastname) {
-        Employee employee = new Employee(firstname, lastname);
-        return employeeService.addToRepositoryEmployee(employee);
+    public Employee addEmployee(@RequestParam("firstName") String firstname, @RequestParam("lastName") String lastname) throws InvalidNameException, NotFoundAnyMatchException {
+        return employeeService.addToRepositoryEmployee(firstname, lastname);
     }
 @GetMapping(path="/get/remove")
-    public String removeEmployee(@RequestParam("firstName") String firstname, @RequestParam("lastName") String lastname) {
-        Employee employee = new Employee(firstname, lastname);
-        return employeeService.removeFromRepositoryEmployee(employee);
+    public Employee removeEmployee(@RequestParam("firstName") String firstname, @RequestParam("lastName") String lastname) throws InvalidNameException, NotFoundAnyMatchException {
+        return employeeService.removeFromRepositoryEmployee(firstname, lastname);
     }
 @GetMapping(path="/get/search")
-    public String findEmployee(@RequestParam("firstName") String firstname, @RequestParam("lastName") String lastname) {
-        Employee employee = new Employee(firstname, lastname);
-        return employeeService.findEmployeeInRepository(employee);
+    public Employee findEmployee(@RequestParam("firstName") String firstname, @RequestParam("lastName") String lastname) throws InvalidNameException, NotFoundAnyMatchException {
+        return employeeService.findEmployeeInRepository(firstname, lastname);
     }
-    @GetMapping(path = "/get/rep")
+   /* @GetMapping(path = "/get/rep")
     @RequestMapping(value = "/get/rep" , method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> printService() {
         return employeeService.printRepository();
-    }
+    }*/
 }

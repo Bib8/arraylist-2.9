@@ -19,6 +19,8 @@ public class Employee {
         this.lastName = lastName;
     }
 
+
+
     public String getFirstName() {
         return firstName;
     }
@@ -50,4 +52,5 @@ public class Employee {
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
+
 }
